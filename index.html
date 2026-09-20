@@ -1,469 +1,876 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arpit Sharma | Python & ML Developer</title>
-<meta name="description" content="Arpit Sharma - MCA student building FastAPI backends and machine learning projects in Python.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arpit Sharma | Python & Backend Developer</title>
+<meta name="description" content="Arpit Sharma – Python / Backend developer building REST APIs with FastAPI and ML projects with scikit-learn.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<!--
+  ============================================================
+  EDIT GUIDE (Arpit, yahin se sab kuch change kar sakta hai)
+  1. Photo:      apni photo isi folder me "photo.jpg" naam se rakh de.
+  2. Links:      "EDIT:" search kar, wahan wahan tere links / text hain.
+  3. Colors:     neeche :root me variables badal de.
+  4. New project: .project card ko copy-paste kar ke text change kar.
+  ============================================================
+-->
+
 <style>
-/* =========================================================
-   1. THEME  -  colours / fonts yahin se change karo
-   ========================================================= */
-:root{
-  --bg:#060911;
-  --surface:#0c1220;
-  --surface-2:#111a2e;
-  --line:rgba(148,170,210,.14);
-  --text:#e7eefb;
-  --muted:#8796b3;
-  --cyan:#22d3ee;
-  --violet:#8b5cf6;
-  --green:#4ade80;
-  --grad:linear-gradient(120deg,var(--cyan),var(--violet));
-  --sans:'Space Grotesk',system-ui,sans-serif;
-  --mono:'JetBrains Mono',ui-monospace,monospace;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.65;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
-:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
-::selection{background:var(--violet);color:#fff}
+  :root{
+    --bg:#0A0F1F;
+    --bg-2:#0F1630;
+    --surface:#131B38;
+    --surface-2:#1A2447;
+    --line:rgba(140,155,255,.16);
+    --text:#E7EBFA;
+    --muted:#98A3C7;
+    --accent:#7C86FF;      /* indigo */
+    --accent-2:#3FD7C2;    /* mint */
+    --warm:#FFB35C;        /* amber, used for code highlights */
+    --pink:#FF7AB6;
+    --radius:14px;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:'Space Grotesk',system-ui,-apple-system,Segoe UI,sans-serif;
+  }
+  :root[data-theme="light"]{
+    --bg:#F5F6FF;--bg-2:#ECEEFF;--surface:#FFFFFF;--surface-2:#F0F1FF;
+    --line:rgba(70,80,180,.18);--text:#141936;--muted:#5A6390;
+    --accent:#4B55E6;--accent-2:#0E9E8B;--warm:#C2680A;--pink:#D63384;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:80px}
+  body{
+    font-family:var(--sans);background:var(--bg);color:var(--text);
+    line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:2px solid var(--accent-2);outline-offset:3px;border-radius:6px}
+  ::selection{background:var(--accent);color:#fff}
 
-#bg-canvas{position:fixed;inset:0;z-index:-2;width:100%;height:100%}
-.glow{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:-1;
-  background:radial-gradient(circle,rgba(34,211,238,.13),transparent 65%);
-  transform:translate(-50%,-50%);left:50%;top:30%;transition:opacity .3s}
-#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--grad);z-index:100}
+  /* ---------- background layers ---------- */
+  #net{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .glow{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(520px circle at var(--mx,50%) var(--my,30%),rgba(124,134,255,.16),transparent 60%);
+  }
+  .grid-bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(ellipse at 50% 20%,#000 20%,transparent 75%);
+            mask-image:radial-gradient(ellipse at 50% 20%,#000 20%,transparent 75%);
+  }
+  main,header,footer{position:relative;z-index:1}
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--pink))}
 
-/* ---------- NAV ---------- */
-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
-  padding:14px 6vw;backdrop-filter:blur(14px);background:rgba(6,9,17,.65);border-bottom:1px solid var(--line)}
-.logo{font-family:var(--mono);font-weight:700;font-size:1.05rem}
-.logo span{color:var(--cyan)}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{font-size:.95rem;color:var(--muted);transition:color .2s;position:relative}
-.nav-links a:hover,.nav-links a.active{color:var(--text)}
-.nav-links a.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--grad)}
-.burger{display:none;background:none;border:0;color:var(--text);font-size:1.6rem;cursor:pointer}
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px clamp(18px,5vw,56px);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:color-mix(in srgb,var(--bg) 70%,transparent);
+    border-bottom:1px solid var(--line);
+  }
+  .logo{font-family:var(--mono);font-weight:700;font-size:1.05rem}
+  .logo span{color:var(--accent-2)}
+  .links{display:flex;gap:6px;align-items:center}
+  .links a{
+    font-size:.92rem;color:var(--muted);padding:6px 12px;border-radius:8px;transition:.2s;
+  }
+  .links a:hover,.links a.active{color:var(--text);background:var(--surface)}
+  .theme-btn{
+    background:var(--surface);border:1px solid var(--line);color:var(--text);
+    width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:1rem;margin-left:6px;transition:.2s;
+  }
+  .theme-btn:hover{transform:rotate(20deg);border-color:var(--accent)}
+  .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--text);
+    width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:1.1rem}
 
-/* ---------- LAYOUT ---------- */
-section{padding:110px 6vw;max-width:1200px;margin:0 auto}
-.sec-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
-.sec-title em{font-style:normal;font-family:var(--mono);color:var(--cyan);font-size:.6em;margin-right:8px}
-.sec-sub{color:var(--muted);max-width:560px;margin-bottom:48px}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
-.reveal.show{opacity:1;transform:none}
+  section{padding:110px clamp(18px,5vw,56px) 40px;max-width:1180px;margin:0 auto}
+  h2.title{
+    font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;letter-spacing:-.02em;margin-bottom:8px;
+    font-family:var(--sans);
+  }
+  h2.title .fn{font-family:var(--mono);color:var(--accent-2);font-weight:500;font-size:.62em;margin-right:10px}
+  .sub{color:var(--muted);max-width:60ch;margin-bottom:38px}
 
-/* ---------- HERO ---------- */
-#home{min-height:100vh;display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center;padding-top:130px}
-.status{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.82rem;color:var(--green);
-  border:1px solid rgba(74,222,128,.3);padding:6px 14px;border-radius:99px;background:rgba(74,222,128,.06);margin-bottom:22px}
-.status i{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.6s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.6)}100%{box-shadow:0 0 0 10px rgba(74,222,128,0)}}
-.hi{font-family:var(--mono);color:var(--muted);margin-bottom:6px}
-h1{font-size:clamp(2.8rem,7vw,5rem);line-height:1.02;letter-spacing:-.035em;font-weight:700}
-h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.typed{font-family:var(--mono);font-size:clamp(1.05rem,2.4vw,1.5rem);margin:18px 0 20px;min-height:2em;color:var(--cyan)}
-.typed::after{content:"▍";animation:blink 1s steps(1) infinite;margin-left:2px;color:var(--violet)}
-@keyframes blink{50%{opacity:0}}
-.lead{color:var(--muted);max-width:520px;margin-bottom:30px}
-.btns{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:38px}
-.btn{padding:12px 24px;border-radius:10px;font-weight:600;font-size:.95rem;transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:8px}
-.btn.primary{background:var(--grad);color:#04101a;box-shadow:0 8px 30px -8px rgba(34,211,238,.55)}
-.btn.primary:hover{transform:translateY(-3px);box-shadow:0 14px 34px -8px rgba(139,92,246,.7)}
-.btn.ghost{border:1px solid var(--line);background:rgba(255,255,255,.02)}
-.btn.ghost:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-3px)}
-.stats{display:flex;gap:34px;flex-wrap:wrap}
-.stat b{display:block;font-size:1.9rem;font-family:var(--mono);color:var(--text)}
-.stat span{font-size:.82rem;color:var(--muted)}
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;
+    padding-top:120px;padding-bottom:60px;
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.82rem;
+    padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted);
+    margin-bottom:22px;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 0 0 rgba(63,215,194,.6);animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 10px rgba(63,215,194,0)}100%{box-shadow:0 0 0 0 rgba(63,215,194,0)}}
+  .hero h1{
+    font-size:clamp(2.6rem,6.4vw,4.9rem);line-height:1.02;font-weight:700;letter-spacing:-.035em;margin-bottom:18px;
+  }
+  .grad{
+    background:linear-gradient(100deg,var(--accent),var(--accent-2) 55%,var(--pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    background-size:200% auto;animation:shine 6s linear infinite;
+  }
+  @keyframes shine{to{background-position:200% center}}
+  .role{font-family:var(--mono);font-size:clamp(1rem,2vw,1.25rem);color:var(--accent-2);min-height:1.8em;margin-bottom:16px}
+  .caret{display:inline-block;width:.6ch;background:var(--accent-2);margin-left:2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .lead{color:var(--muted);max-width:52ch;margin-bottom:30px;font-size:1.05rem}
+  .cta{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:12px;font-weight:600;font-size:.95rem;
+    border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer;
+    transition:transform .2s,box-shadow .2s,border-color .2s;font-family:var(--sans);
+  }
+  .btn:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 10px 30px -10px var(--accent)}
+  .btn.primary{background:linear-gradient(120deg,var(--accent),#5B64F0);color:#fff;border-color:transparent}
+  .btn.primary:hover{box-shadow:0 14px 34px -10px var(--accent)}
 
-/* photo + code card */
-.hero-right{position:relative;display:flex;justify-content:center}
-.photo-wrap{position:relative;width:min(340px,80%);aspect-ratio:4/5}
-.photo-wrap::before{content:"";position:absolute;inset:-3px;border-radius:26px;background:conic-gradient(from 0deg,var(--cyan),var(--violet),var(--cyan));
-  animation:spin 6s linear infinite;filter:blur(1px)}
-@keyframes spin{to{transform:rotate(360deg)}}
-.photo{position:absolute;inset:0;border-radius:24px;overflow:hidden;background:var(--surface);z-index:1;display:grid;place-items:center}
-.photo img{width:100%;height:100%;object-fit:cover}
-.photo .fallback{font-family:var(--mono);font-size:4rem;font-weight:700;color:var(--cyan)}
-.float{position:absolute;z-index:2;font-family:var(--mono);font-size:.78rem;padding:9px 14px;border-radius:12px;
-  background:rgba(12,18,32,.9);border:1px solid var(--line);backdrop-filter:blur(8px);animation:floaty 5s ease-in-out infinite}
-.float.a{left:-14%;top:14%}
-.float.b{right:-10%;top:52%;animation-delay:1.2s}
-.float.c{left:-6%;bottom:6%;animation-delay:2.4s}
-.float b{color:var(--cyan)}
-@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  /* terminal */
+  .term{
+    background:#0B1024;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    box-shadow:0 30px 80px -30px rgba(90,100,255,.55);
+    font-family:var(--mono);font-size:.84rem;
+    animation:float 7s ease-in-out infinite;
+  }
+  :root[data-theme="light"] .term{background:#12183A;color:#E7EBFA}
+  @keyframes float{50%{transform:translateY(-10px)}}
+  .term-bar{display:flex;align-items:center;gap:7px;padding:12px 14px;background:#0F1530;border-bottom:1px solid var(--line)}
+  .term-bar i{width:11px;height:11px;border-radius:50%;display:block}
+  .term-bar i:nth-child(1){background:#FF5F57}.term-bar i:nth-child(2){background:#FEBC2E}.term-bar i:nth-child(3){background:#28C840}
+  .term-bar span{margin-left:10px;color:#7F8BB8;font-size:.78rem}
+  .term-body{padding:18px 18px 20px;min-height:340px;color:#DDE3FF;white-space:pre-wrap;word-break:break-word}
+  .t-prompt{color:var(--accent-2)}
+  .t-key{color:var(--warm)}
+  .t-str{color:#8BE9A8}
+  .t-num{color:var(--pink)}
+  .t-dim{color:#7F8BB8}
+  .t-ok{color:#28C840}
 
-/* ---------- ABOUT / TERMINAL ---------- */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
-.about-grid p{color:var(--muted);margin-bottom:16px}
-.about-grid p strong{color:var(--text);font-weight:600}
-.terminal{background:#050810;border:1px solid var(--line);border-radius:14px;overflow:hidden;font-family:var(--mono);font-size:.85rem;
-  box-shadow:0 30px 60px -30px rgba(139,92,246,.35)}
-.t-bar{display:flex;gap:7px;align-items:center;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--line)}
-.t-bar i{width:11px;height:11px;border-radius:50%}
-.t-bar i:nth-child(1){background:#ff5f57}.t-bar i:nth-child(2){background:#febc2e}.t-bar i:nth-child(3){background:#28c840}
-.t-bar span{margin-left:10px;color:var(--muted);font-size:.75rem}
-.t-body{padding:18px;line-height:1.85;overflow-x:auto;white-space:pre}
-.k{color:#c792ea}.s{color:#c3e88d}.f{color:#82aaff}.c{color:#546e8a}.n{color:#f78c6c}
+  /* photo */
+  .photo-wrap{position:relative;width:132px;height:132px;margin-bottom:22px}
+  .photo-wrap::before{
+    content:"";position:absolute;inset:-4px;border-radius:50%;
+    background:conic-gradient(from 0deg,var(--accent),var(--accent-2),var(--pink),var(--accent));
+    animation:spin 6s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .photo{
+    position:absolute;inset:0;border-radius:50%;overflow:hidden;background:var(--surface-2);
+    border:4px solid var(--bg);display:grid;place-items:center;
+    font-family:var(--mono);font-weight:700;font-size:2.4rem;color:var(--accent-2);
+  }
+  .photo img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
 
-/* ---------- SKILLS ---------- */
-.skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
-.skill-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;transition:border-color .3s,transform .3s}
-.skill-card:hover{border-color:rgba(34,211,238,.5);transform:translateY(-5px)}
-.skill-card h3{font-size:1rem;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.skill-card h3 span{font-size:1.3rem}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{font-family:var(--mono);font-size:.78rem;padding:5px 12px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);color:#c6d3ec}
+  .scroll-hint{
+    position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+    font-family:var(--mono);font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:8px;
+  }
+  .scroll-hint b{width:1px;height:34px;background:linear-gradient(var(--accent-2),transparent);animation:drop 1.8s infinite}
+  @keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+  .hero{position:relative}
 
-/* ---------- PROJECTS ---------- */
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
-.project{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:30px;
-  display:flex;flex-direction:column;transform-style:preserve-3d;transition:transform .15s ease-out,border-color .3s;overflow:hidden}
-.project::before{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--mx,50%) var(--my,0%),rgba(34,211,238,.13),transparent 55%);opacity:0;transition:opacity .3s}
-.project:hover{border-color:rgba(139,92,246,.55)}
-.project:hover::before{opacity:1}
-.tag{font-family:var(--mono);font-size:.72rem;color:var(--violet);margin-bottom:12px}
-.project h3{font-size:1.3rem;margin-bottom:10px}
-.project p{color:var(--muted);font-size:.93rem;margin-bottom:18px;flex:1}
-.metric{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.8rem;color:var(--green);margin-bottom:18px}
-.metric b{font-size:1.3rem}
-.project .link{margin-top:20px;font-weight:600;color:var(--cyan);font-size:.92rem}
-.project .link:hover{text-decoration:underline}
+  /* ---------- about ---------- */
+  .about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:34px}
+  .about-text p{color:var(--muted);margin-bottom:16px;font-size:1.04rem}
+  .about-text p b{color:var(--text);font-weight:600}
+  .stats{display:grid;gap:14px}
+  .stat{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;
+    display:flex;align-items:baseline;gap:14px;transition:.25s;
+  }
+  .stat:hover{border-color:var(--accent);transform:translateX(6px)}
+  .stat strong{font-size:2rem;font-weight:700;color:var(--accent-2);font-family:var(--mono);min-width:76px}
+  .stat span{color:var(--muted);font-size:.93rem}
 
-/* ---------- EDUCATION TIMELINE ---------- */
-.timeline{position:relative;max-width:820px;padding-left:44px}
-.timeline::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:var(--line)}
-.timeline .fill{position:absolute;left:11px;top:6px;width:2px;height:0;background:var(--grad);transition:height 1.6s ease}
-.tl-item{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:34px}
-.tl-item::before{content:"";position:absolute;left:-42px;top:28px;width:18px;height:18px;border-radius:50%;background:var(--bg);border:3px solid var(--cyan);box-shadow:0 0 14px var(--cyan)}
-.tl-item.done::before{border-color:var(--green);box-shadow:0 0 14px var(--green)}
-.tl-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px}
-.tl-item h3{font-size:1.15rem}
-.date{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
-.tl-item .where{color:var(--cyan);font-size:.92rem;margin-bottom:8px}
-.tl-item p{color:var(--muted);font-size:.92rem}
-.badge{display:inline-block;font-family:var(--mono);font-size:.72rem;padding:3px 10px;border-radius:99px;margin-right:6px;margin-top:10px}
-.badge.ok{background:rgba(74,222,128,.1);color:var(--green);border:1px solid rgba(74,222,128,.3)}
-.badge.now{background:rgba(34,211,238,.1);color:var(--cyan);border:1px solid rgba(34,211,238,.3)}
-.link-note{position:relative;font-family:var(--mono);font-size:.78rem;color:var(--violet);margin:-14px 0 20px 6px}
-.link-note::before{content:"↓";margin-right:8px}
+  /* ---------- skills ---------- */
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+  .tab{
+    font-family:var(--mono);font-size:.85rem;padding:8px 16px;border-radius:999px;cursor:pointer;
+    background:var(--surface);color:var(--muted);border:1px solid var(--line);transition:.2s;
+  }
+  .tab:hover{color:var(--text)}
+  .tab.on{background:var(--accent);color:#fff;border-color:transparent}
+  .skill-panel{display:none;flex-wrap:wrap;gap:12px}
+  .skill-panel.on{display:flex}
+  .chip{
+    display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;background:var(--surface);
+    border:1px solid var(--line);font-weight:500;transition:.25s;
+    animation:pop .4s both;
+  }
+  .chip:hover{transform:translateY(-4px) scale(1.03);border-color:var(--accent-2);box-shadow:0 12px 28px -14px var(--accent-2)}
+  .chip i{width:8px;height:8px;border-radius:50%;background:var(--accent-2)}
+  @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.95)}}
 
-/* ---------- CONTACT ---------- */
-.contact{text-align:center;background:linear-gradient(180deg,var(--surface),transparent);border:1px solid var(--line);border-radius:26px;padding:70px 24px}
-.contact h2{font-size:clamp(1.9rem,5vw,3rem);letter-spacing:-.02em;margin-bottom:14px}
-.contact p{color:var(--muted);max-width:480px;margin:0 auto 30px}
-.socials{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:26px}
-footer{text-align:center;color:var(--muted);font-family:var(--mono);font-size:.78rem;padding:30px 0 40px}
+  /* ---------- projects ---------- */
+  .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:22px}
+  .project{
+    position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;
+    display:flex;flex-direction:column;gap:14px;overflow:hidden;
+    transition:transform .25s ease,border-color .25s;
+    transform-style:preserve-3d;
+  }
+  .project::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;
+    background:radial-gradient(360px circle at var(--px,50%) var(--py,50%),rgba(124,134,255,.2),transparent 60%);
+  }
+  .project:hover{border-color:var(--accent)}
+  .project:hover::before{opacity:1}
+  .project.featured{grid-column:1/-1}
+  .p-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .p-file{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+  .tag{
+    font-family:var(--mono);font-size:.72rem;padding:4px 10px;border-radius:999px;
+    border:1px solid var(--line);color:var(--accent-2);white-space:nowrap;
+  }
+  .project h3{font-size:1.4rem;letter-spacing:-.01em}
+  .project p{color:var(--muted);font-size:.98rem}
+  .points{list-style:none;display:grid;gap:6px;color:var(--muted);font-size:.93rem}
+  .points li::before{content:"›";color:var(--accent-2);margin-right:10px;font-family:var(--mono)}
+  .stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+  .stack span{font-family:var(--mono);font-size:.76rem;padding:4px 10px;border-radius:8px;background:var(--surface-2);color:var(--text)}
+  .p-link{font-weight:600;color:var(--accent);display:inline-flex;gap:8px;align-items:center;transition:.2s;width:max-content}
+  .p-link:hover{gap:14px;color:var(--accent-2)}
 
-/* ---------- RESPONSIVE ---------- */
-@media (max-width:860px){
-  #home,.about-grid{grid-template-columns:1fr}
-  .hero-right{order:-1}
-  .photo-wrap{width:min(260px,70%)}
-  .float.a{left:-4%}.float.b{right:-4%}
-  .burger{display:block}
-  .nav-links{position:fixed;top:58px;left:0;right:0;flex-direction:column;background:rgba(6,9,17,.97);padding:22px 6vw;gap:18px;
-    transform:translateY(-130%);transition:transform .3s;border-bottom:1px solid var(--line)}
-  .nav-links.open{transform:none}
-  section{padding:80px 6vw}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
-  .reveal{opacity:1;transform:none}
-  html{scroll-behavior:auto}
-}
+  /* endpoint strip inside featured project */
+  .endpoints{
+    display:grid;gap:8px;font-family:var(--mono);font-size:.82rem;margin:4px 0;
+  }
+  .ep{display:flex;gap:12px;align-items:center;padding:9px 12px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line)}
+  .m{font-weight:700;min-width:58px}
+  .m.get{color:var(--accent-2)}.m.post{color:var(--warm)}.m.put{color:var(--accent)}.m.del{color:var(--pink)}
+  .ep em{margin-left:auto;color:var(--muted);font-style:normal}
+
+  /* ---------- timeline ---------- */
+  .timeline{position:relative;margin-left:8px;padding-left:34px;display:grid;gap:26px}
+  .timeline::before{
+    content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(var(--accent),var(--accent-2),transparent);
+  }
+  .tl{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;transition:.25s}
+  .tl:hover{border-color:var(--accent);transform:translateX(6px)}
+  .tl::before{
+    content:"";position:absolute;left:-36px;top:26px;width:14px;height:14px;border-radius:50%;
+    background:var(--bg);border:3px solid var(--accent-2);
+  }
+  .tl.now::before{background:var(--accent-2);animation:pulse 2s infinite}
+  .tl .yr{font-family:var(--mono);font-size:.8rem;color:var(--accent-2)}
+  .tl h3{font-size:1.15rem;margin:2px 0}
+  .tl p{color:var(--muted);font-size:.95rem}
+
+  /* ---------- contact ---------- */
+  .contact{
+    text-align:center;background:linear-gradient(160deg,var(--surface),var(--bg-2));
+    border:1px solid var(--line);border-radius:24px;padding:60px 24px;position:relative;overflow:hidden;
+  }
+  .contact::after{
+    content:"";position:absolute;width:420px;height:420px;border-radius:50%;left:50%;top:-260px;transform:translateX(-50%);
+    background:radial-gradient(circle,rgba(124,134,255,.35),transparent 70%);pointer-events:none;
+  }
+  .contact h2{font-size:clamp(1.8rem,4.5vw,3rem);letter-spacing:-.02em;margin-bottom:12px;position:relative}
+  .contact p{color:var(--muted);max-width:52ch;margin:0 auto 28px;position:relative}
+  .contact .cta{justify-content:center;position:relative}
+  .toast{
+    position:fixed;bottom:26px;left:50%;transform:translate(-50%,90px);background:var(--accent-2);color:#04241F;
+    padding:10px 18px;border-radius:10px;font-weight:600;transition:.35s;z-index:200;font-size:.92rem;
+  }
+  .toast.show{transform:translate(-50%,0)}
+  footer{text-align:center;padding:40px 20px 50px;color:var(--muted);font-size:.85rem;font-family:var(--mono)}
+
+  /* ---------- boot splash ---------- */
+  #boot{position:fixed;inset:0;z-index:999;background:var(--bg);display:grid;place-items:center;transition:opacity .6s ease,visibility .6s}
+  #boot.done{opacity:0;visibility:hidden}
+  .boot-in{font-family:var(--mono);width:min(360px,86vw);color:var(--muted);font-size:.9rem}
+  .boot-in b{color:var(--accent-2);font-weight:500}
+  .boot-bar{height:4px;background:var(--surface-2);border-radius:99px;margin:14px 0 8px;overflow:hidden}
+  .boot-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--pink));box-shadow:0 0 14px var(--accent)}
+
+  /* hero entrance (runs after boot) */
+  .stagger{opacity:0;transform:translateY(22px);animation:up .8s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(1.3s + var(--i,0) * 110ms)}
+  @keyframes up{to{opacity:1;transform:none}}
+  .term{opacity:0;animation:up .9s cubic-bezier(.2,.8,.2,1) 1.6s forwards,float 7s ease-in-out 2.5s infinite}
+
+  /* custom cursor ring */
+  .ring{position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;z-index:400;
+    border:1.5px solid var(--accent-2);pointer-events:none;opacity:0;transition:width .25s,height .25s,margin .25s,background .25s,opacity .3s}
+  .ring.on{opacity:.85}
+  .ring.big{width:60px;height:60px;margin:-30px 0 0 -30px;background:rgba(63,215,194,.12)}
+
+  /* section title underline draw */
+  h2.title::after{content:"";display:block;height:3px;width:0;border-radius:3px;margin-top:12px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 1s cubic-bezier(.2,.8,.2,1) .35s}
+  h2.title.in::after{width:84px}
+
+  /* tech marquee */
+  .marquee{position:relative;z-index:1;overflow:hidden;border-block:1px solid var(--line);background:color-mix(in srgb,var(--surface) 55%,transparent);
+    padding:16px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+  .track{display:flex;gap:0;width:max-content;animation:slide 32s linear infinite}
+  .marquee:hover .track{animation-play-state:paused}
+  .track span{font-family:var(--mono);font-size:1rem;color:var(--muted);display:flex;align-items:center;gap:46px;padding-right:46px;white-space:nowrap}
+  .track span::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.7}
+  @keyframes slide{to{transform:translateX(-50%)}}
+
+  /* code editor card (About) */
+  .editor{margin-top:34px;background:#0B1024;border:1px solid var(--line);border-radius:16px;overflow:hidden;font-family:var(--mono);font-size:.86rem;
+    box-shadow:0 30px 70px -40px rgba(90,100,255,.6)}
+  :root[data-theme="light"] .editor{background:#12183A;color:#E7EBFA}
+  .ed-bar{display:flex;gap:8px;align-items:center;padding:0 0 0 14px;background:#0F1530;border-bottom:1px solid var(--line);height:42px}
+  .ed-tab{padding:0 16px;height:100%;display:flex;align-items:center;color:#DDE3FF;background:#0B1024;border-right:1px solid var(--line);font-size:.8rem;gap:8px}
+  .ed-tab::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--warm)}
+  .ed-body{padding:18px 0;overflow-x:auto;color:#DDE3FF}
+  .code-ln{display:flex;gap:18px;padding:0 18px;line-height:1.85;white-space:pre;opacity:0;transform:translateX(-12px)}
+  .editor.in .code-ln{animation:lnIn .5s ease forwards;animation-delay:calc(var(--d,0) * 90ms + .3s)}
+  @keyframes lnIn{to{opacity:1;transform:none}}
+  .code-ln .no{color:#4B5787;min-width:1.4ch;text-align:right;user-select:none}
+  .k{color:#C792EA}.f{color:#82AAFF}.s{color:#8BE9A8}.c{color:#5C6796;font-style:italic}.b{color:var(--warm)}
+
+  /* featured project animated border */
+  @property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
+  .project.featured{
+    border:1.5px solid transparent;
+    background:linear-gradient(var(--surface),var(--surface)) padding-box,
+               conic-gradient(from var(--ang),var(--accent),var(--accent-2),var(--pink),var(--accent)) border-box;
+    animation:rot 7s linear infinite;
+  }
+  @keyframes rot{to{--ang:360deg}}
+
+  /* back to top */
+  .totop{position:fixed;right:22px;bottom:24px;width:46px;height:46px;border-radius:50%;z-index:90;cursor:pointer;
+    background:var(--surface);color:var(--text);border:1px solid var(--line);font-size:1.1rem;
+    opacity:0;transform:translateY(20px);pointer-events:none;transition:.3s}
+  .totop.show{opacity:1;transform:none;pointer-events:auto}
+  .totop:hover{border-color:var(--accent-2);color:var(--accent-2);transform:translateY(-4px)}
+
+  /* ---------- resume modal ---------- */
+  .links a.nav-resume{border:1px solid var(--accent);color:var(--text)}
+  .links a.nav-resume:hover{background:var(--accent);color:#fff}
+  .modal{
+    position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:20px;
+    background:rgba(5,8,20,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    opacity:0;pointer-events:none;transition:opacity .25s;
+  }
+  .modal.open{opacity:1;pointer-events:auto}
+  .modal-box{
+    width:min(920px,100%);height:min(88vh,1000px);display:flex;flex-direction:column;
+    background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    box-shadow:0 40px 100px -30px rgba(90,100,255,.6);
+    transform:translateY(24px) scale(.97);transition:transform .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .modal.open .modal-box{transform:none}
+  .modal-bar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg-2)}
+  .modal-bar h3{font-size:1rem;margin-right:auto;font-family:var(--mono);font-weight:500}
+  .modal-bar .btn{padding:8px 14px;font-size:.85rem;border-radius:10px}
+  .modal-close{background:none;border:1px solid var(--line);color:var(--text);width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:1rem}
+  .modal-close:hover{border-color:var(--pink);color:var(--pink)}
+  .modal iframe{flex:1;width:100%;border:0;background:#fff}
+  @media (max-width:560px){.modal-bar .hide-s{display:none}}
+
+  /* ---------- reveal on scroll ---------- */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease}
+  .rv.in{opacity:1;transform:none}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;padding-top:110px}
+    .about-grid{grid-template-columns:1fr}
+    .scroll-hint{display:none}
+  }
+  @media (max-width:720px){
+    .menu-btn{display:block}
+    .links{
+      position:fixed;top:64px;right:14px;left:14px;flex-direction:column;align-items:stretch;
+      background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;
+      transform:translateY(-14px);opacity:0;pointer-events:none;transition:.25s;
+    }
+    .links.open{transform:none;opacity:1;pointer-events:auto}
+    .theme-btn{margin:6px 0 0;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .rv{opacity:1;transform:none}
+    .stagger,.term,.code-ln{opacity:1!important;transform:none!important}
+    #boot{display:none}
+    h2.title::after{width:84px}
+    .track{animation:none}
+  }
 </style>
 </head>
-
 <body>
-<canvas id="bg-canvas"></canvas>
-<div class="glow" id="glow"></div>
-<div id="progress"></div>
 
-<!-- ================= NAV ================= -->
+<div id="boot" aria-hidden="true">
+  <div class="boot-in">
+    <div><b>$</b> booting arpit.dev<span class="caret">&nbsp;</span></div>
+    <div class="boot-bar"><i id="bootFill"></i></div>
+    <div id="bootPct">0%</div>
+  </div>
+</div>
+<div class="ring" id="ring"></div>
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<div class="progress" id="progress"></div>
+<canvas id="net"></canvas>
+<div class="grid-bg"></div>
+<div class="glow" id="glow"></div>
+
 <nav>
   <a href="#home" class="logo">&lt;arpit<span>/</span>&gt;</a>
-  <button class="burger" id="burger" aria-label="Menu">☰</button>
-  <ul class="nav-links" id="links">
-    <li><a href="#home">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+  <div class="links" id="links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#education">Journey</a>
+    <a href="#contact">Contact</a>
+    <a href="#" class="nav-resume" data-resume>Resume</a>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle light or dark theme">☾</button>
+  </div>
 </nav>
 
-<!-- ================= HERO ================= -->
-<section id="home">
-  <div>
-    <div class="status"><i></i> Open to work · Python / ML / Backend</div>
-    <p class="hi">Hello world, I’m</p>
-    <h1>Arpit <span class="grad">Sharma</span></h1>
-    <div class="typed" id="typed"></div>
-    <p class="lead">
-      MCA student building FastAPI backends and machine learning models in Python.
-      I enjoy building clean APIs, extracting insights from data, and creating things that actually work.
-    </p>
-    <div class="btns">
-      <a href="#projects" class="btn primary">View Projects</a>
-      <a href="https://github.com/aarpitsharmaa27" target="_blank" rel="noopener" class="btn ghost">GitHub</a>
-      <a href="https://www.linkedin.com/in/arpit-sharma-tech" target="_blank" rel="noopener" class="btn ghost">LinkedIn</a>
-    </div>
-    <div class="stats">
-      <div class="stat"><b data-count="3">0</b><span>Projects built</span></div>
-      <div class="stat"><b data-count="45">0</b><span>Days ML training done</span></div>
-      <div class="stat"><b data-count="8.15" data-dec="2">0</b><span>MCA CGPA (till sem 2)</span></div>
-    </div>
-  </div>
-
-  <div class="hero-right">
-    <div class="photo-wrap">
-      <div class="photo">
-        <img src="Arpit_PIC.png" alt="Arpit Sharma">
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="home">
+    <div>
+      <!-- EDIT: apni photo "photo.jpg" naam se isi folder me rakh de. Photo na mile to initials "AS" dikhenge -->
+      <div class="photo-wrap">
+        <div class="photo">AS<img src="photo.jpg" alt="Arpit Sharma" onerror="this.remove()"></div>
       </div>
-      <div class="float a"><b>FastAPI</b></div>
-      <div class="float b"><b>SQL</b></div>
-      <div class="float c"><b>Python</b> 🐍</div>
+
+      <div class="badge"><span class="dot"></span> Open to Python / Backend roles</div>
+      <h1>Hi, I'm <span class="grad">Arpit Sharma</span></h1>
+      <div class="role"><span id="typed"></span><span class="caret">&nbsp;</span></div>
+      <p class="lead">
+        MCA student who builds REST APIs with FastAPI and trains ML models with scikit-learn.
+        I like clean backend code, clear data validation and projects that actually run.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">View Projects</a>
+        <button class="btn" type="button" data-resume>📄 View Resume</button>
+        <a class="btn" href="https://github.com/aarpitsharmaa27" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/arpit-sharma-tech" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+
+    <div class="term" aria-label="Animated terminal showing an API response about Arpit">
+      <div class="term-bar"><i></i><i></i><i></i><span>arpit@dev: ~/portfolio</span></div>
+      <div class="term-body" id="term"></div>
+    </div>
+
+    <div class="scroll-hint"><span>scroll</span><b></b></div>
+  </section>
+
+  <!-- tech ticker -->
+  <div class="marquee" aria-hidden="true">
+    <div class="track">
+      <span>Python</span><span>FastAPI</span><span>Pydantic</span><span>REST APIs</span><span>SQL</span><span>MySQL</span><span>Pandas</span><span>NumPy</span><span>Scikit-learn</span><span>Git</span><span>Linux</span>
+      <span>Python</span><span>FastAPI</span><span>Pydantic</span><span>REST APIs</span><span>SQL</span><span>MySQL</span><span>Pandas</span><span>NumPy</span><span>Scikit-learn</span><span>Git</span><span>Linux</span>
     </div>
   </div>
-</section>
 
-<!-- ================= ABOUT ================= -->
-<section id="about">
-  <h2 class="sec-title reveal"><em>01</em>About me</h2>
-  <p class="sec-sub reveal">I enjoy solving problems across both backend development and machine learning.</p>
-  <div class="about-grid">
-    <div class="reveal">
-      <p>I am an <strong>MCA (3rd semester)</strong> student at Chandigarh Group of Colleges, Landran. I am interested in backend engineering, especially <strong>FastAPI, Pydantic, and REST APIs</strong>.</p>
-      <p>I completed a 45-day machine learning industry training program at <strong>Ziion Technology, Mohali</strong>, working with <strong>NumPy, Pandas, and Scikit-learn</strong> on real datasets.</p>
-      <p>My B.Sc. Mathematics background helps me understand the logic behind machine learning.</p>
+  <!-- ================= ABOUT ================= -->
+  <section id="about">
+    <h2 class="title rv"><span class="fn">def</span>about_me()</h2>
+    <p class="sub rv">Short intro, bina bakwaas ke.</p>
+    <div class="about-grid">
+      <div class="about-text rv">
+        <p>I'm pursuing my <b>MCA at Chandigarh Group of Colleges, Landran</b>, with a focus on Python and backend engineering.</p>
+        <p>I build APIs with <b>FastAPI and Pydantic</b>, work with <b>SQL and Git</b>, and I'm comfortable with the data side too: <b>NumPy, Pandas and scikit-learn</b>. I completed a 45-day machine learning industry training at Ziion Technology, Mohali.</p>
+        <p>I like turning what I learn into working projects, from cleaning messy data to shipping clean API endpoints.</p>
+      </div>
+      <div class="stats rv">
+        <div class="stat"><strong data-count="8.15" data-dec="2">0</strong><span>CGPA in MCA (till semester 2)</span></div>
+        <div class="stat"><strong data-count="3">0</strong><span>Projects built: 1 API, 2 ML</span></div>
+        <div class="stat"><strong data-count="45">0</strong><span>Day ML industry training completed</span></div>
+      </div>
     </div>
-    <div class="terminal reveal">
-      <div class="t-bar"><i></i><i></i><i></i><span>arpit.py</span></div>
-<div class="t-body"><span class="k">class</span> <span class="f">Developer</span>:
-    name    = <span class="s">"Arpit Sharma"</span>
-    role    = <span class="s">"Python / ML / Backend"</span>
-    stack   = [<span class="s">"Python"</span>, <span class="s">"FastAPI"</span>, <span class="s">"SQL"</span>,
-               <span class="s">"Scikit-learn"</span>, <span class="s">"Pandas"</span>]
-    degree  = <span class="s">"MCA (2025-2027)"</span>
-    base    = <span class="s">"B.Sc. Mathematics"</span>
 
-    <span class="k">def</span> <span class="f">build</span>(self, idea):
-        <span class="c"># clean code, working product</span>
-        <span class="k">return</span> self.<span class="f">ship</span>(idea)
-
-me = <span class="f">Developer</span>()
-<span class="f">print</span>(me.<span class="f">build</span>(<span class="s">"your next feature"</span>))</div>
+    <div class="editor rv" aria-label="Python class describing Arpit">
+      <div class="ed-bar"><div class="ed-tab">developer.py</div></div>
+      <div class="ed-body">
+        <div class="code-ln"><span class="no">1</span><span><span class="k">class</span> <span class="f">Developer</span>:</span></div>
+        <div class="code-ln"><span class="no">2</span><span>    name = <span class="s">"Arpit Sharma"</span></span></div>
+        <div class="code-ln"><span class="no">3</span><span>    role = <span class="s">"Python / Backend Developer"</span></span></div>
+        <div class="code-ln"><span class="no">4</span><span>    stack = [<span class="s">"FastAPI"</span>, <span class="s">"Pydantic"</span>, <span class="s">"SQL"</span>, <span class="s">"Pandas"</span>, <span class="s">"Scikit-learn"</span>]</span></div>
+        <div class="code-ln"><span class="no">5</span><span>    education = <span class="s">"MCA @ CGC Landran"</span></span></div>
+        <div class="code-ln"><span class="no">6</span><span>    open_to_work = <span class="b">True</span></span></div>
+        <div class="code-ln"><span class="no">7</span><span></span></div>
+        <div class="code-ln"><span class="no">8</span><span>    <span class="k">def</span> <span class="f">solve</span>(self, problem):</span></div>
+        <div class="code-ln"><span class="no">9</span><span>        <span class="c"># understand first, then build</span></span></div>
+        <div class="code-ln"><span class="no">10</span><span>        data = self.<span class="f">understand</span>(problem)</span></div>
+        <div class="code-ln"><span class="no">11</span><span>        <span class="k">return</span> self.<span class="f">build</span>(data)</span></div>
+      </div>
     </div>
+  </section>
+
+  <!-- ================= SKILLS ================= -->
+  <section id="skills">
+    <h2 class="title rv"><span class="fn">import</span>skills</h2>
+    <p class="sub rv">Tap a category to see what I work with.</p>
+    <div class="tabs rv" id="tabs" role="tablist">
+      <button class="tab on" data-t="lang">Languages</button>
+      <button class="tab" data-t="back">Backend</button>
+      <button class="tab" data-t="data">Data &amp; ML</button>
+      <button class="tab" data-t="tools">Tools</button>
+    </div>
+    <div class="rv">
+      <div class="skill-panel on" id="lang"><div class="chip"><i></i>Python</div><div class="chip"><i></i>SQL</div><div class="chip"><i></i>HTML</div><div class="chip"><i></i>CSS</div></div>
+      <div class="skill-panel" id="back"><div class="chip"><i></i>FastAPI</div><div class="chip"><i></i>REST APIs</div><div class="chip"><i></i>Pydantic</div><div class="chip"><i></i>JSON</div><div class="chip"><i></i>MySQL</div></div>
+      <div class="skill-panel" id="data"><div class="chip"><i></i>NumPy</div><div class="chip"><i></i>Pandas</div><div class="chip"><i></i>Matplotlib</div><div class="chip"><i></i>Seaborn</div><div class="chip"><i></i>Scikit-learn</div></div>
+      <div class="skill-panel" id="tools"><div class="chip"><i></i>Git</div><div class="chip"><i></i>GitHub</div><div class="chip"><i></i>VS Code</div><div class="chip"><i></i>Linux</div></div>
+    </div>
+  </section>
+
+  <!-- ================= PROJECTS ================= -->
+  <section id="projects">
+    <h2 class="title rv"><span class="fn">git</span>log --projects</h2>
+    <p class="sub rv">Ek backend project, do ML projects. Har card pe hover karke dekh.</p>
+
+    <div class="projects">
+      <!-- Featured project -->
+      <article class="project featured rv">
+        <div class="p-head"><span class="p-file">patient-management-api/main.py</span><span class="tag">Backend</span></div>
+        <h3>Patient Management API</h3>
+        <p>A REST API built with FastAPI for managing patient records, with validated input and clear error responses.</p>
+        <div class="endpoints">
+          <div class="ep"><span class="m get">GET</span>/patients<em>list all records</em></div>
+          <div class="ep"><span class="m post">POST</span>/patients<em>create with Pydantic validation</em></div>
+          <div class="ep"><span class="m put">PUT</span>/patients/{id}<em>update a record</em></div>
+          <div class="ep"><span class="m del">DELETE</span>/patients/{id}<em>remove a record</em></div>
+        </div>
+        <ul class="points">
+          <li>Full CRUD with path and query parameters</li>
+          <li>Pydantic models for request validation</li>
+          <li>HTTP exceptions for not-found and bad input, JSON-based storage</li>
+        </ul>
+        <div class="stack"><span>Python</span><span>FastAPI</span><span>Pydantic</span><span>REST API</span></div>
+        <a class="p-link" href="https://github.com/aarpitsharmaa27/patient-management-api" target="_blank" rel="noopener">View on GitHub <span>→</span></a>
+      </article>
+
+      <article class="project rv">
+        <div class="p-head"><span class="p-file">titanic_survival.ipynb</span><span class="tag">Machine Learning</span></div>
+        <h3>Titanic Survival Prediction</h3>
+        <p>Classification project that predicts passenger survival, from data cleaning to model evaluation.</p>
+        <ul class="points">
+          <li>Exploratory data analysis and visualisation</li>
+          <li>Feature engineering and preprocessing</li>
+          <li>Classification with scikit-learn</li>
+        </ul>
+        <div class="stack"><span>Python</span><span>Pandas</span><span>Scikit-learn</span></div>
+        <!-- EDIT: is project ka GitHub repo link daal de -->
+        <a class="p-link" href="https://github.com/aarpitsharmaa27" target="_blank" rel="noopener">See my GitHub <span>→</span></a>
+      </article>
+
+      <article class="project rv">
+        <div class="p-head"><span class="p-file">churn_model.ipynb</span><span class="tag">Machine Learning</span></div>
+        <h3>Customer Churn Prediction</h3>
+        <p>Identifies customers likely to leave, using preprocessing pipelines and classification models.</p>
+        <ul class="points">
+          <li>Data preprocessing and encoding</li>
+          <li>Classification models to flag churn risk</li>
+          <li>Model comparison and evaluation</li>
+        </ul>
+        <div class="stack"><span>Python</span><span>Pandas</span><span>Scikit-learn</span></div>
+        <!-- EDIT: is project ka GitHub repo link daal de -->
+        <a class="p-link" href="https://github.com/aarpitsharmaa27" target="_blank" rel="noopener">See my GitHub <span>→</span></a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= EDUCATION ================= -->
+  <section id="education">
+    <h2 class="title rv"><span class="fn">class</span>Journey</h2>
+    <p class="sub rv">Maths se shuru hua, ab Python aur ML mein.</p>
+    <div class="timeline">
+      <div class="tl rv">
+        <div class="yr">Completed</div>
+        <h3>B.Sc. in Mathematics</h3>
+        <p>Saheed Captain Vikram Batra Degree College, Palampur. This is where my logic and problem-solving base comes from, and it led straight into the MCA.</p>
+      </div>
+      <div class="tl now rv">
+        <div class="yr">2025 – 2027 · in progress</div>
+        <h3>Master of Computer Applications (MCA)</h3>
+        <p>Chandigarh Group of Colleges, Landran. CGPA 8.15/10 till semester 2, now in semester 3.</p>
+      </div>
+      <div class="tl rv">
+        <div class="yr">Industry training</div>
+        <h3>Machine Learning Training, 45 days</h3>
+        <p>Ziion Technology, Mohali. Hands-on ML work that fed into my Titanic and Churn projects.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact">
+    <div class="contact rv">
+      <h2>Let's build something together.</h2>
+      <p>I'm looking for Python, Backend, Data Science and ML roles. Email is the fastest way to reach me.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:aarpitsharmaa27@gmail.com">Email me</a>
+        <button class="btn" type="button" data-resume>📄 View Resume</button>
+        <button class="btn" id="copyMail" type="button">Copy email</button>
+        <a class="btn" href="https://github.com/aarpitsharmaa27" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/arpit-sharma-tech" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© 2026 Arpit Sharma · built with HTML, CSS &amp; a bit of JS</footer>
+<!-- EDIT: apna resume "resume.pdf" naam se isi folder me rakh de (naam badalna ho to RESUME_FILE JS me change kar) -->
+<div class="modal" id="resumeModal" role="dialog" aria-modal="true" aria-label="Resume viewer" aria-hidden="true">
+  <div class="modal-box">
+    <div class="modal-bar">
+      <h3>Arpit_Sharma_Resume.pdf</h3>
+      <a class="btn hide-s" id="resNew" href="resume.pdf" target="_blank" rel="noopener">Open in new tab</a>
+      <a class="btn primary" id="resDl" href="resume.pdf" download="Arpit_Sharma_Resume.pdf">Download</a>
+      <button class="modal-close" id="resClose" aria-label="Close resume">✕</button>
+    </div>
+    <iframe id="resFrame" title="Arpit Sharma resume" src="about:blank"></iframe>
   </div>
-</section>
+</div>
 
-<!-- ================= SKILLS ================= -->
-<section id="skills">
-  <h2 class="sec-title reveal"><em>02</em>Skills</h2>
-  <p class="sec-sub reveal">Technologies and tools I use in my development journey.</p>
-  <div class="skill-grid">
-    <div class="skill-card reveal"><h3><span>🐍</span>Programming</h3><div class="chips"><span class="chip">Python</span><span class="chip">SQL</span></div></div>
-    <div class="skill-card reveal"><h3><span>⚙️</span>Backend</h3><div class="chips"><span class="chip">FastAPI</span><span class="chip">REST APIs</span><span class="chip">Pydantic</span><span class="chip">JSON</span></div></div>
-    <div class="skill-card reveal"><h3><span>🗄️</span>Database</h3><div class="chips"><span class="chip">MySQL</span></div></div>
-    <div class="skill-card reveal"><h3><span>🤖</span>Data &amp; ML</h3><div class="chips"><span class="chip">NumPy</span><span class="chip">Pandas</span><span class="chip">Matplotlib</span><span class="chip">Seaborn</span><span class="chip">Scikit-learn</span></div></div>
-    <div class="skill-card reveal"><h3><span>🧰</span>Tools</h3><div class="chips"><span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">VS Code</span><span class="chip">Linux</span></div></div>
-    <div class="skill-card reveal"><h3><span>🎨</span>Frontend</h3><div class="chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript (basic)</span></div></div>
-  </div>
-</section>
-
-<!-- ================= PROJECTS ================= -->
-<section id="projects">
-  <h2 class="sec-title reveal"><em>03</em>Projects</h2>
-  <p class="sec-sub reveal">A mix of backend development and machine learning projects.</p>
-  <div class="proj-grid">
-
-    <article class="project reveal">
-      <div class="tag">Backend · REST API</div>
-      <h3>Patient Management API</h3>
-      <p>A REST API built with FastAPI to manage patient records, including CRUD operations, Pydantic validation, path and query parameters, HTTP exceptions, and JSON-based storage.</p>
-      <div class="chips"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">Pydantic</span><span class="chip">REST API</span></div>
-      <a class="link" href="https://github.com/aarpitsharmaa27/patient-management-api" target="_blank" rel="noopener">View on GitHub →</a>
-    </article>
-
-    <article class="project reveal">
-      <div class="tag">Machine Learning · Classification</div>
-      <h3>Titanic Survival Prediction</h3>
-      <p>Used EDA, feature engineering, and Logistic Regression to predict passenger survival.</p>
-      <div class="metric"><b>~80%</b> accuracy</div>
-      <div class="chips"><span class="chip">Python</span><span class="chip">Pandas</span><span class="chip">Scikit-learn</span></div>
-      <a class="link" href="https://github.com/aarpitsharmaa27/titanic-survival-prediction" target="_blank" rel="noopener">View on GitHub →</a>
-    </article>
-
-    <article class="project reveal">
-      <div class="tag">Machine Learning · Classification</div>
-      <h3>Customer Churn Prediction</h3>
-      <p>Used data preprocessing and classification models to identify customers who may leave a company.</p>
-      <div class="chips"><span class="chip">Python</span><span class="chip">Pandas</span><span class="chip">Scikit-learn</span></div>
-      <!-- TODO: yahan churn repo ka exact link daal do -->
-      <a class="link" href="https://github.com/aarpitsharmaa27" target="_blank" rel="noopener">View on GitHub →</a>
-    </article>
-
-  </div>
-</section>
-
-<!-- ================= EDUCATION ================= -->
-<section id="education">
-  <h2 class="sec-title reveal"><em>04</em>Education &amp; Training</h2>
-  <p class="sec-sub reveal">Graduation completed, currently pursuing my Master's.</p>
-
-  <div class="timeline" id="timeline">
-    <div class="fill" id="tl-fill"></div>
-
-    <div class="tl-item reveal done">
-      <div class="tl-top"><h3>B.Sc. Mathematics</h3><span class="date">2020 – 2024</span></div>
-      <div class="where">Saheed Captain Vikram Batra (SCVB) Degree College, Palampur</div>
-      <p>Built a strong foundation in mathematics, statistics, and logical thinking that supports my work in machine learning.</p>
-      <span class="badge ok">✓ Graduation completed</span>
-    </div>
-    <div class="link-note reveal">After graduation → Master's in Computer Applications</div>
-
-    <div class="tl-item reveal">
-      <div class="tl-top"><h3>Master of Computer Applications (MCA)</h3><span class="date">2025 – 2027</span></div>
-      <div class="where">Chandigarh Group of Colleges (CGC), Landran</div>
-      <p>Focused on software development, backend engineering, and machine learning. CGPA: 8.15 / 10 (up to 2nd semester).</p>
-      <span class="badge now">● Currently in 3rd semester</span>
-    </div>
-
-    <div class="tl-item reveal done">
-      <div class="tl-top"><h3>Machine Learning Industry Training</h3><span class="date">45 days</span></div>
-      <div class="where">Ziion Technology, Mohali</div>
-      <p>Hands-on ML training covering data preprocessing, model building, and evaluation with Scikit-learn.</p>
-      <span class="badge ok">✓ Completed</span>
-    </div>
-  </div>
-</section>
-
-<!-- ================= CONTACT ================= -->
-<section id="contact">
-  <div class="contact reveal">
-    <h2>Let's build something together</h2>
-    <p>I am currently looking for opportunities in Python development, backend engineering, and machine learning.</p>
-    <a class="btn primary" href="mailto:aarpitsharmaa27@gmail.com">✉ aarpitsharmaa27@gmail.com</a>
-    <div class="socials">
-      <a class="btn ghost" href="https://github.com/aarpitsharmaa27" target="_blank" rel="noopener">GitHub</a>
-      <a class="btn ghost" href="https://www.linkedin.com/in/arpit-sharma-tech" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </div>
-</section>
-
-<footer>© <span id="yr"></span> Arpit Sharma · Designed &amp; coded by me</footer>
+<div class="toast" id="toast">Email copied</div>
 
 <script>
-/* =========================================================
-   JS  -  animations
-   ========================================================= */
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* ---- 1. Neural-network background (ML vibe) ---- */
+/* ---------- boot splash + hero entrance ---------- */
 (function(){
-  const cv = document.getElementById('bg-canvas'), ctx = cv.getContext('2d');
-  let w, h, pts = [], mouse = {x:-999,y:-999};
-  function size(){
-    w = cv.width = innerWidth; h = cv.height = innerHeight;
-    const n = Math.min(90, Math.floor(w*h/17000));
-    pts = Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35}));
-  }
-  addEventListener('resize',size); size();
-  addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
-  function draw(){
-    ctx.clearRect(0,0,w,h);
-    for(const p of pts){
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>w)p.vx*=-1; if(p.y<0||p.y>h)p.vy*=-1;
-      const dx=p.x-mouse.x, dy=p.y-mouse.y, d=Math.hypot(dx,dy);
-      if(d<120){p.x+=dx/d*1.2;p.y+=dy/d*1.2}
-      ctx.beginPath();ctx.arc(p.x,p.y,1.6,0,6.28);ctx.fillStyle='rgba(34,211,238,.7)';ctx.fill();
-    }
-    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
-      const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
-      if(d<130){ctx.strokeStyle=`rgba(139,92,246,${.28*(1-d/130)})`;ctx.lineWidth=1;
-        ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke()}
-    }
-    if(!reduce) requestAnimationFrame(draw);
-  }
-  draw();
+  const boot = document.getElementById('boot'), fill = document.getElementById('bootFill'), pct = document.getElementById('bootPct');
+  document.querySelectorAll('.hero > div:first-child > *').forEach((el, i) => { el.classList.add('stagger'); el.style.setProperty('--i', i); });
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ boot.classList.add('done'); return; }
+  const t0 = performance.now(), dur = 1100;
+  (function step(t){
+    const p = Math.min((t - t0) / dur, 1);
+    fill.style.width = (p * 100) + '%'; pct.textContent = Math.round(p * 100) + '%';
+    if(p < 1) requestAnimationFrame(step);
+    else setTimeout(() => boot.classList.add('done'), 200);
+  })(t0);
 })();
 
-/* ---- 2. Cursor glow ---- */
-const glow=document.getElementById('glow');
-addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});
+/* editor line delays */
+document.querySelectorAll('.code-ln').forEach((l, i) => l.style.setProperty('--d', i));
 
-/* ---- 3. Typing effect: yahan apne roles edit karo ---- */
+/* ---------- cursor ring + magnetic buttons ---------- */
+if(matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+  const ring = document.getElementById('ring');
+  let rx = 0, ry = 0, tx = 0, ty = 0;
+  addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; ring.classList.add('on'); }, {passive:true});
+  (function loop(){ rx += (tx - rx) * .16; ry += (ty - ry) * .16; ring.style.transform = `translate(${rx}px,${ry}px)`; requestAnimationFrame(loop); })();
+  document.querySelectorAll('a,button,.chip,.tab,.project').forEach(el => {
+    el.addEventListener('pointerenter', () => ring.classList.add('big'));
+    el.addEventListener('pointerleave', () => ring.classList.remove('big'));
+  });
+  document.querySelectorAll('.btn').forEach(b => {
+    b.addEventListener('pointermove', e => {
+      const r = b.getBoundingClientRect();
+      b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .18}px,${(e.clientY - r.top - r.height / 2) * .3}px)`;
+    });
+    b.addEventListener('pointerleave', () => b.style.transform = '');
+  });
+}
+
+/* ---------- back to top ---------- */
+const toTop = document.getElementById('toTop');
+addEventListener('scroll', () => toTop.classList.toggle('show', scrollY > 700), {passive:true});
+toTop.onclick = () => scrollTo({top:0, behavior:'smooth'});
+
+/* ---------- theme ---------- */
+const root = document.documentElement, themeBtn = document.getElementById('themeBtn');
+try{ const s = localStorage.getItem('theme'); if(s) root.dataset.theme = s; }catch(e){}
+function syncIcon(){ themeBtn.textContent = root.dataset.theme === 'dark' ? '☾' : '☀'; }
+syncIcon();
+themeBtn.onclick = () => {
+  root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  try{ localStorage.setItem('theme', root.dataset.theme); }catch(e){}
+  syncIcon();
+};
+
+/* ---------- mobile menu ---------- */
+const links = document.getElementById('links');
+document.getElementById('menuBtn').onclick = () => links.classList.toggle('open');
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+/* ---------- role typing ---------- */
+const roles = ['Python Developer', 'Backend Developer (FastAPI)', 'ML Enthusiast', 'MCA Student'];
+const typed = document.getElementById('typed');
+let ri = 0, ci = 0, del = false;
+function tick(){
+  const w = roles[ri];
+  typed.textContent = w.slice(0, ci);
+  if(!del && ci < w.length){ ci++; setTimeout(tick, 70); }
+  else if(!del){ del = true; setTimeout(tick, 1400); }
+  else if(ci > 0){ ci--; setTimeout(tick, 35); }
+  else { del = false; ri = (ri + 1) % roles.length; setTimeout(tick, 300); }
+}
+tick();
+
+/* ---------- hero terminal ---------- */
+const term = document.getElementById('term');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const script = [
+  {t:'<span class="t-prompt">$</span> uvicorn main:app --reload', d:600},
+  {t:'<span class="t-dim">INFO:  Uvicorn running on http://127.0.0.1:8000</span>', d:350},
+  {t:'<span class="t-ok">INFO:  Application startup complete.</span>\n', d:500},
+  {t:'<span class="t-prompt">$</span> curl localhost:8000/arpit', d:700},
+  {t:'{', d:150},
+  {t:'  <span class="t-key">"name"</span>: <span class="t-str">"Arpit Sharma"</span>,', d:120},
+  {t:'  <span class="t-key">"role"</span>: <span class="t-str">"Python / Backend Developer"</span>,', d:120},
+  {t:'  <span class="t-key">"stack"</span>: [<span class="t-str">"FastAPI"</span>, <span class="t-str">"Pydantic"</span>, <span class="t-str">"SQL"</span>],', d:120},
+  {t:'  <span class="t-key">"ml"</span>: [<span class="t-str">"Pandas"</span>, <span class="t-str">"Scikit-learn"</span>],', d:120},
+  {t:'  <span class="t-key">"education"</span>: <span class="t-str">"MCA, CGC Landran"</span>,', d:120},
+  {t:'  <span class="t-key">"projects"</span>: <span class="t-num">3</span>,', d:120},
+  {t:'  <span class="t-key">"open_to_work"</span>: <span class="t-num">true</span>', d:120},
+  {t:'}', d:300},
+  {t:'<span class="t-ok">200 OK</span> <span class="t-dim">· hire_me() → scroll down</span>', d:0},
+];
+if(reduce){ term.innerHTML = script.map(s => s.t).join('\n'); }
+else{
+  let n = 0;
+  setTimeout(function next(){
+    if(n >= script.length){ term.insertAdjacentHTML('beforeend','\n<span class="t-prompt">$</span> <span class="caret">&nbsp;</span>'); return; }
+    term.insertAdjacentHTML('beforeend', (n ? '\n' : '') + script[n].t);
+    setTimeout(next, script[n++].d);
+  }, 2100);
+}
+
+/* ---------- scroll progress + active link ---------- */
+const bar = document.getElementById('progress');
+const sections = [...document.querySelectorAll('main section[id]')];
+const navLinks = [...document.querySelectorAll('.links a')];
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  let cur = sections[0].id;
+  sections.forEach(s => { if(scrollY + 140 >= s.offsetTop) cur = s.id; });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+}, {passive:true});
+
+/* ---------- reveal + counters ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if(!e.isIntersecting) return;
+  e.target.classList.add('in');
+  e.target.querySelectorAll('[data-count]').forEach(count);
+  io.unobserve(e.target);
+}), {threshold:.15});
+document.querySelectorAll('.rv').forEach((el, i) => {
+  el.style.transitionDelay = (i % 3) * 80 + 'ms';
+  io.observe(el);
+});
+function count(el){
+  const end = parseFloat(el.dataset.count), dec = +el.dataset.dec || 0;
+  if(reduce){ el.textContent = end.toFixed(dec); return; }
+  const t0 = performance.now(), dur = 1400;
+  (function step(t){
+    const p = Math.min((t - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = (end * e).toFixed(dec);
+    if(p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+/* ---------- skill tabs ---------- */
+document.querySelectorAll('.tab').forEach(tab => tab.onclick = () => {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.skill-panel').forEach(p => p.classList.remove('on'));
+  tab.classList.add('on');
+  const panel = document.getElementById(tab.dataset.t);
+  panel.classList.add('on');
+  panel.querySelectorAll('.chip').forEach((c, i) => c.style.animationDelay = i * 60 + 'ms');
+});
+document.querySelectorAll('.skill-panel.on .chip').forEach((c, i) => c.style.animationDelay = i * 60 + 'ms');
+
+/* ---------- mouse glow + project spotlight/tilt ---------- */
+const glow = document.getElementById('glow');
+addEventListener('pointermove', e => {
+  glow.style.setProperty('--mx', e.clientX + 'px');
+  glow.style.setProperty('--my', e.clientY + 'px');
+}, {passive:true});
+if(!reduce && matchMedia('(hover:hover)').matches){
+  document.querySelectorAll('.project').forEach(card => {
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      card.style.setProperty('--px', x + 'px'); card.style.setProperty('--py', y + 'px');
+      if(!card.classList.contains('featured')){
+        card.style.transform = `perspective(900px) rotateX(${((y / r.height) - .5) * -6}deg) rotateY(${((x / r.width) - .5) * 6}deg) translateY(-4px)`;
+      }
+    });
+    card.addEventListener('pointerleave', () => card.style.transform = '');
+  });
+}
+
+/* ---------- resume viewer ---------- */
+const RESUME_FILE = 'resume.pdf';   // EDIT: file ka naam yahan change kar sakta hai
+const modal = document.getElementById('resumeModal'), frame = document.getElementById('resFrame');
+let lastFocus = null;
+function openResume(e){
+  if(e) e.preventDefault();
+  // Mobile / browsers jo PDF iframe me nahi dikhate: seedha new tab me kholo
+  const canEmbed = navigator.pdfViewerEnabled !== false && innerWidth > 720;
+  if(!canEmbed){ window.open(RESUME_FILE, '_blank', 'noopener'); return; }
+  lastFocus = document.activeElement;
+  frame.src = RESUME_FILE + '#toolbar=0&navpanes=0&view=FitH';
+  modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('resClose').focus();
+}
+function closeResume(){
+  modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = ''; frame.src = 'about:blank';
+  if(lastFocus) lastFocus.focus();
+}
+document.querySelectorAll('[data-resume]').forEach(b => b.addEventListener('click', e => { openResume(e); links.classList.remove('open'); }));
+document.getElementById('resClose').onclick = closeResume;
+modal.addEventListener('click', e => { if(e.target === modal) closeResume(); });
+addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('open')) closeResume(); });
+
+/* ---------- copy email ---------- */
+document.getElementById('copyMail').onclick = async () => {
+  try{ await navigator.clipboard.writeText('aarpitsharmaa27@gmail.com'); }catch(e){}
+  const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800);
+};
+
+/* ---------- particle network background ---------- */
 (function(){
-  const roles=['Python Developer','Backend Developer (FastAPI)','Machine Learning Enthusiast','MCA Student'];
-  const el=document.getElementById('typed');
-  if(reduce){el.textContent=roles[0];return}
-  let r=0,c=0,del=false;
-  (function tick(){
-    const word=roles[r];
-    el.textContent=word.slice(0,c);
-    if(!del&&c<word.length){c++;setTimeout(tick,75)}
-    else if(!del){del=true;setTimeout(tick,1400)}
-    else if(c>0){c--;setTimeout(tick,35)}
-    else{del=false;r=(r+1)%roles.length;setTimeout(tick,300)}
+  if(reduce) return;
+  const c = document.getElementById('net'), ctx = c.getContext('2d');
+  let w, h, pts = [], mouse = {x:-999, y:-999};
+  function size(){
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    w = c.width = innerWidth * dpr; h = c.height = innerHeight * dpr;
+    c.style.width = innerWidth + 'px'; c.style.height = innerHeight + 'px';
+    const n = Math.min(70, Math.floor(innerWidth / 18));
+    pts = Array.from({length:n}, () => ({x:Math.random()*w, y:Math.random()*h, vx:(Math.random()-.5)*.35*dpr, vy:(Math.random()-.5)*.35*dpr}));
+  }
+  addEventListener('resize', size); size();
+  addEventListener('pointermove', e => { const d = w / innerWidth; mouse.x = e.clientX * d; mouse.y = e.clientY * d; }, {passive:true});
+  function col(){ return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#7C86FF'; }
+  (function draw(){
+    ctx.clearRect(0, 0, w, h);
+    const color = col(), max = 150 * (w / innerWidth);
+    for(const p of pts){
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0 || p.x > w) p.vx *= -1;
+      if(p.y < 0 || p.y > h) p.vy *= -1;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 1.6, 0, 6.283); ctx.fillStyle = color; ctx.globalAlpha = .55; ctx.fill();
+    }
+    for(let i = 0; i < pts.length; i++){
+      for(let j = i + 1; j < pts.length; j++){
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.hypot(dx, dy);
+        if(d < max){ ctx.globalAlpha = (1 - d / max) * .28; ctx.strokeStyle = color; ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke(); }
+      }
+      const mx = pts[i].x - mouse.x, my = pts[i].y - mouse.y, md = Math.hypot(mx, my);
+      if(md < max * 1.3){ ctx.globalAlpha = (1 - md / (max * 1.3)) * .5; ctx.strokeStyle = '#3FD7C2'; ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke(); }
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
   })();
 })();
-
-/* ---- 4. Scroll reveal + counters + timeline fill ---- */
-const io=new IntersectionObserver(es=>es.forEach(e=>{
-  if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}
-}),{threshold:.15});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-document.querySelectorAll('[data-count]').forEach(el=>{
-  const target=+el.dataset.count, dec=+(el.dataset.dec||0);
-  if(reduce){el.textContent=target.toFixed(dec);return}
-  const t0=performance.now(),dur=1600;
-  (function step(t){
-    const p=Math.min((t-t0)/dur,1);
-    el.textContent=(target*(1-Math.pow(1-p,3))).toFixed(dec);
-    if(p<1)requestAnimationFrame(step);
-  })(t0);
-});
-
-const tl=document.getElementById('timeline');
-new IntersectionObserver((es,ob)=>es.forEach(e=>{
-  if(e.isIntersecting){document.getElementById('tl-fill').style.height='calc(100% - 12px)';ob.disconnect()}
-}),{threshold:.25}).observe(tl);
-
-/* ---- 5. Project cards: 3D tilt + spotlight ---- */
-if(!reduce) document.querySelectorAll('.project').forEach(card=>{
-  card.addEventListener('mousemove',e=>{
-    const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
-    card.style.setProperty('--mx',x+'px');card.style.setProperty('--my',y+'px');
-    card.style.transform=`perspective(900px) rotateX(${(y/r.height-.5)*-8}deg) rotateY(${(x/r.width-.5)*8}deg) translateY(-4px)`;
-  });
-  card.addEventListener('mouseleave',()=>card.style.transform='');
-});
-
-/* ---- 6. Nav: progress bar, active link, mobile menu ---- */
-const secs=[...document.querySelectorAll('section')],links=[...document.querySelectorAll('.nav-links a')];
-addEventListener('scroll',()=>{
-  const h=document.documentElement;
-  document.getElementById('progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
-  let cur=secs[0].id;
-  secs.forEach(s=>{if(scrollY>=s.offsetTop-160)cur=s.id});
-  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
-},{passive:true});
-const menu=document.getElementById('links');
-document.getElementById('burger').onclick=()=>menu.classList.toggle('open');
-links.forEach(a=>a.onclick=()=>menu.classList.remove('open'));
-
-document.getElementById('yr').textContent=new Date().getFullYear();
 </script>
 </body>
 </html>
